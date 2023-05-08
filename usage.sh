@@ -1,7 +1,11 @@
 # The SSH host key was created like so:
 ssh-keygen -t ed25519 -P '' -C none -f host-key/ssh_host_ed25519_key
 
-## Usage via `nix run`
+# To check that the container is correctly picking up the host key,
+# scan the pubkey of the running container...
+nix run . -- --run ssh-keyscan sshkey-demo
+# ...and compare it with the expected result
+ssh-keygen -y -f host-key/ssh_host_ed25519_key
 
 #―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 # Container lifecycle
@@ -15,8 +19,8 @@ nix run . -- create --start
 # while the flake is used for the container definitions.
 
 # Use `nixos-container` to control the running container
-sudo nixos-container run demo -- hostname
-sudo nixos-container root-login demo
+sudo nixos-container run sshkey-demo -- hostname
+sudo nixos-container root-login sshkey-demo
 
 # Destroy container
 nix run . -- destroy
@@ -42,4 +46,4 @@ extra-container shell /tmp/container
 
 #―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
 # Inspect container configs
-nix eval . --apply 'sys: sys.containers.demo.config.networking.hostName'
+nix eval . --apply 'sys: sys.containers.hostkey-demo.config.networking.hostName'

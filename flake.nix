@@ -14,7 +14,7 @@
         nixpkgs = inputs.nixpkgs;
 
         config = {
-          containers.demo = {
+          containers.sshkey-demo = {
             extra.addressPrefix = "10.250.0";
 
             bindMounts.src = {
